@@ -1,0 +1,104 @@
+
++
+
+
+fig = plt.Figure()
+ax1 = fig.subplot(211)
+
+
+# Do we force them to pass in an axes? Create one by default if missing?
+cf1 = Contourf(cube1, cmap='jet', coords=(1, 'latitude'), axes=ax1)
+cf2 = Contourf(cube2, cmap='jet', coords=(1, 'latitude')) ==> (212)
+
+Viewer(cf1, cf2)
+
+ax1.figure == ax2.figure
+
+XXX cf = Contourf(cube, cmap='jet', coords=('wibble', 'latitude'), alias='wibble')
+
+XXX cf = Contourf(cube, cmap='jet', coords=(1, 'latitude'), alias={wibble=1})
+
+
+cf.alias(wibble=1)
+
+import iris.plot as iplt
+
+iplt.contourf(cube[0], cmap='jet', coords=(1, 'latitude'))
+
+
+------------------
+
+Scenario #1
+-----------
+cube is (t, y, x)
+
+fig = plt.Figure()
+ax1 = fig.add_subplot(111)
+
+plot1 = Contourf(cube, cmap='viridis', coords=('longitude', 'latitude'), axes=ax1)
+Viewer(plot1)
+
+
+Scenario #2
+-----------
+cube is (t, y, x) and I want a plot title that updates ...
+
+fig = plt.Figure()
+ax1 = fig.add_subplot(111)
+
+def callback(cube, axes):
+    coord = cube.coord('time')
+    axes.title('The date is ', coord.units.num2date(coord.points[0]))
+
+
+plot1 = Contourf(cube, cmap='viridis', coords=('longitude', 'latitude'), axes=ax1, callback=callback)
+Viewer(plot1)
+
+
+Scenario #3
+-----------
+I have two cubes, and I would like to plot them side-by-side with a shared slider.
+
+
+
+
+
+
+
+
+Scenario #4
+-----------
+I would like to plot a cube twice, once with an invariance to a shared slider (as in like a summed cube).
+
+
+
+
+
+
+
+Scenario #5
+-----------
+I would like to plot a cube twice, once fixed wrt one slider.
+
+
+
+
+
+
+
+Scenario #6
+-----------
+I want to add some coastlines to my plot.
+
+Coastlines("50m", axes=ax) ???
+
+
+
+
+
+
+
+
+
+
+
