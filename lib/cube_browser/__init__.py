@@ -6,21 +6,27 @@ import iris.plot as iplt
 
 class Contourf(object):
     """
-    Constructs a filled contour plot instance of a cube, using coordinates
+    Constructs a filled contour plot instance of a cube.
+
+    An iris.plot.contourf instance is created using coordinates
     specified in the input arguments as axes coordinates and turning the
     remaining dimension coordinates into interactive sliders.
 
     """
     def __init__(self, cube, coords, **kwargs):
         """
-        :param cube: the iris.cube.Cube instance to plot
-        :param coords: the cube coordinate names or dimension indices to plot
+        Args:
+
+        * cube: the iris.cube.Cube instance to plot
+
+        * coords: the cube coordinate names or dimension indices to plot
                        in the order (x-axis, y-axis)
-        :param kwargs: kwargs for plot customization,
-            see :func:`matplotlib.pyplot.contourf`
-            and :func:`iris.plot.contourf` for details of other
-            valid keyword arguments.
-        :return: iris.plot.contourf instance
+
+        Kwargs:
+
+        kwargs for plot customization, see :func:`matplotlib.pyplot.contourf`
+        and :func:`iris.plot.contourf` for details of other valid keyword
+        arguments.
         """
 
         self.cube = cube
@@ -31,15 +37,21 @@ class Contourf(object):
         # A mapping of 1d-coord name to dimension
         self.coord_dim = self.coord_dims()
 
+    # XXX: #24: coord_values is under review to be changed to a list or
+    # dictionary or something
+    # NOTE: Currently, Browser supplies a dictionary here.
     def __call__(self, **coord_values):
         """
         Constructs a static plot of the cube sliced at the coordinates
-        specified in coord_values.  This is called once each time a slider
-        position is moved, at which point the new coordinate values are plotted.
+        specified in coord_values.
 
-        :param coord_values: mapping dictionary of coordinate name or dimension
+        This is called once each time a slider position is moved, at which
+        point the new coordinate values are plotted.
+
+        Args:
+
+        * coord_values: mapping dictionary of coordinate name or dimension
         index with value index at which to be sliced
-        :return: matplotlib.pyplot axes instance
         """
         index = [slice(None)] * self.cube.ndim
         for name, value in kwargs.items():
@@ -51,7 +63,8 @@ class Contourf(object):
                                  axes=self.axes, **self.kwargs)
         return plt.gca()
 
-    # This function is a temporary measure for the one-axis, one-plot scenario.
+    # XXX: #25: This function is a temporary measure for the one-axis, one-plot
+    # scenario.  Multi-axes scenarios need to be handled soon.
     def new_axes(self):
         fig = plt.figure()
         ax = fig.add_subplot(111, projection=cube.coord_system().
@@ -60,7 +73,7 @@ class Contourf(object):
 
     def coord_dims(self):
         """
-        :return: a mapping dictionary of dimension coordinates
+        Compiles a mapping dictionary of dimension coordinates
         """
         mapping = {}
         for dim in range(self.cube.ndim):
@@ -70,7 +83,7 @@ class Contourf(object):
 
     def slider_coords(self):
         """
-        :return: a list of the dim coords not used on the plot axes, to be
+        Compiles a list of the dim coords not used on the plot axes, to be
         used as slider coordinates
         """
         available = []
@@ -82,7 +95,9 @@ class Contourf(object):
 
 class Browser(object):
     """
-    Compiles a single cube_browser.plot instance or list of instances into a
+    Compiler for cube_browser plots and associated sliders.
+
+    Compiles a single cube_browser.Plot instance or list of instances into a
     vertical arrangement of axes with shared coordinate sliders, to be
     displayed in a Jupyter notebook.
     """
@@ -90,7 +105,10 @@ class Browser(object):
         """
         Compiles non-axis coordinates into sliders, the values from which are
         used to reconstruct plots upon movement of slider.
-        :param plot: cube_browser.plot instance to display with slider
+
+        Args:
+
+        * plot: cube_browser.Plot instance to display with slider
         """
         self.plot = plot
         self._sliders = {}
@@ -108,11 +126,12 @@ class Browser(object):
         self.on_change(None)
         IPython.display.display(self.form)
 
-    # This tells the plot to respond to value changes in the sliders
     def on_change(self, change):
         """
-        Compiles mapping dictionary of coordinate values upon each movement of
-        slider to be passed to plot call in order to reconstruct plot
+        Compiles mapping dictionary of slider values.
+
+        This dictionary is re-compiled upon each movement of a coordinate
+        slider, to be passed to plot call in order to reconstruct the plot.
         """
         for name, slider in self._sliders.items():
             self._slidermap[name] = slider.value
