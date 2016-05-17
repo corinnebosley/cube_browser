@@ -81,7 +81,17 @@ class Contourf(object):
 
 
 class Browser(object):
+    """
+    Compiles a single cube_browser.plot instance or list of instances into a
+    vertical arrangement of axes with shared coordinate sliders, to be
+    displayed in a Jupyter notebook.
+    """
     def __init__(self, plot):
+        """
+        Compiles non-axis coordinates into sliders, the values from which are
+        used to reconstruct plots upon movement of slider.
+        :param plot: cube_browser.plot instance to display with slider
+        """
         self.plot = plot
         self._sliders = {}
         self._slidermap = {}
@@ -100,6 +110,10 @@ class Browser(object):
 
     # This tells the plot to respond to value changes in the sliders
     def on_change(self, change):
+        """
+        Compiles mapping dictionary of coordinate values upon each movement of
+        slider to be passed to plot call in order to reconstruct plot
+        """
         for name, slider in self._sliders.items():
             self._slidermap[name] = slider.value
         self.plot(**self._slidermap)
