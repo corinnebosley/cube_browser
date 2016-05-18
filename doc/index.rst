@@ -1,15 +1,10 @@
-.. HoloCube documentation master file
 
-.. raw:: html
-
+.. Cube Browser documentation master file
 
 Introduction
 ____________
 
-.. notebook:: holocube Homepage.ipynb
-
-------------
-
+.. notebook:: cubebrowser Homepage.ipynb
 
 Installation
 ____________
@@ -34,5 +29,7 @@ bug reports and feature requests on our
    :maxdepth: 2
 
    Home <self>
+   writingNotebooks/intro
+   developingCubeBrowsers/intro
 
    Github source <https://github.com/SciTools/cube_browser>
