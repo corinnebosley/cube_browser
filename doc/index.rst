@@ -30,6 +30,8 @@ There are three different ways which you can use Cube Browser:
    This could be useful if you have a specific combination of plots which you use frequently and repeatedly.
 
    `Click here <../lib/cube_browser/explorer.py>`_ to see the source code for the Explorer we have provided.
+   
+   `Click here to see how our fancy new mybinder links work <http://mybinder.org/repo/corinnebosley/cube_browser/doc/browsing_cubes/explore.ipynb>`_
 
 Installation
 ____________
